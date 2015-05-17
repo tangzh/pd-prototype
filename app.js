@@ -1,3 +1,5 @@
+var APP_CONFIG = require('./config/application');
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -27,7 +29,7 @@ app.use('/', index);
 app.use('/users', users);
 
 // set up database
-mongoose.connect('mongodb://localhost/prototype', function(err) {
+mongoose.connect(APP_CONFIG.db, function(err) {
     if(err) {
         console.log('connection error', err);
     } else {
