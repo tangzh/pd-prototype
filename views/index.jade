@@ -1,8 +1,13 @@
 extends layout
 
 block content
-  div.clearfix
-    div.rooms-side-bar.col-xs-3
-      ul
-        li Room1
-        li Room2
+  .sidebar.sidebar-left
+  .sidebar.sidebar-right
+  .main-content(ng-controller="mainCtrl")
+    .messages-container
+      .message(ng-repeat="msg in messages")
+        span.username {{msg.user.username}}
+        span.message-content {{msg.content}}
+    .message-input-container
+      textarea(ng-model="message.content", name="message-input", placeholder="Type in here...")
+      button.btn.btn-primary.btn-lg.btn-send(ng-click="sendMessage()") Send

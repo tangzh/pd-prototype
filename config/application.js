@@ -2,6 +2,8 @@
  * Applicaiton configurations
  */
 (function() {
+  'use strict';
+
   var _ = require('underscore');
 
   var DEV_CONFIG = {

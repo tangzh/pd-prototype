@@ -30,7 +30,7 @@ gulp.task('less', function() {
     .pipe(gulp.dest('./public/stylesheets/css'));
 });
 
-gulp.task('jsFiles', function() {
+gulp.task('js', function() {
 
 });
 
