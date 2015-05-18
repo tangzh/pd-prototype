@@ -1,0 +1,26 @@
+@import "../variables.less";
+
+.sidebar {
+  position: fixed;
+  width: @sidebar-width;
+  top: 0;
+  bottom: 0;
+  background-color: @theme-blue;
+  color: @white;
+
+  .items {
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .item {
+    text-align: center;
+    padding: 10px 0;
+    border-bottom: white 1px solid;
+
+    &:last-child {
+      border-bottom-width: 0;
+    }
+  }
+}

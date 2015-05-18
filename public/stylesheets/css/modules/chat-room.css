@@ -1,0 +1,10 @@
+.chat-room {
+  position: fixed;
+  padding: 0 220px 55px;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.chat-room .messages-container {
+  margin: 0 20px;
+}

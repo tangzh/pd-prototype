@@ -1,0 +1,21 @@
+.sidebar {
+  position: fixed;
+  width: 220px;
+  top: 0;
+  bottom: 0;
+  background-color: #2aa7aa;
+  color: #ffffff;
+}
+.sidebar .items {
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
+}
+.sidebar .item {
+  text-align: center;
+  padding: 10px 0;
+  border-bottom: white 1px solid;
+}
+.sidebar .item:last-child {
+  border-bottom-width: 0;
+}
