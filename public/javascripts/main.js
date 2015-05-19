@@ -20,7 +20,10 @@
   };
 
   var mainCtrl = function($scope, $firebaseArray) {
-    var ref = new Firebase(FIREBASE_REF);
+    var ref = new Firebase(FIREBASE_REF),
+        QUESTION_REG = /^q#/,
+        ANSWER_REG = /^ans_/,
+        messageType = 0; // 1 for question, 2 for answer
 
     $scope.user = _initUser();
 
@@ -38,13 +41,18 @@
      * Post
      * {string} content
      * {string | integer} message_id
+     * {object} user
      * {array <object>} replied_posts
      *   {string} content
      *   {string | integer} message_id
+     *   {object} user
      */
     $scope.posts = $firebaseArray(ref.child('posts'));
 
     $scope.sendMessage = function() {
+      var questionId,
+          repliedQuestion;
+
       if (!$scope.message.user) {
         $scope.message.user = $scope.user;
       }
@@ -55,12 +63,50 @@
         console.log('message is empty');
       }
 
+      // Parsing and creating question post
+      if ($scope.message.content.match(QUESTION_REG)) { // question
+        $scope.message.content = $scope.message.content.replace(QUESTION_REG, '');
+        messageType = 1;
+      } else if ($scope.message.content.match(ANSWER_REG)) { // answer
+        var params = $scope.message.content.split('#');
+        $scope.message.content = params[1];
+        questionId = params[0].replace(ANSWER_REG, '');
+        messageType = 2;
+      }
+
       $scope.messages.$add($scope.message)
-        .then(function() {
-          $scope.message.content = '';
+        .then(function(ref) {
+          if (messageType === 1) {
+            $scope.posts.$add({
+              message_id: ref.key(),
+              content: $scope.message.content,
+              created_at: _getTimestamp(),
+              user: $scope.user,
+              replied_posts: {}
+            });
+          } else if (messageType === 2) {
+            repliedQuestion = _.find($scope.posts, function(p) {
+              return p.$id === questionId;
+            });
+            console.log('repliedQuestion:', repliedQuestion);
+
+            var uuid = _generateUuid();
+
+            repliedQuestion.replied_posts = repliedQuestion.replied_posts || {};
+
+            repliedQuestion.replied_posts[uuid] = {
+              message_id: ref.key(),
+              content: $scope.message.content,
+              created_at: _getTimestamp(),
+              user: $scope.user
+            };
+
+            $scope.posts.$save(repliedQuestion);
+          }
+
+          $scope.message = {};
         });
 
-      // Parsing and creating question post
     };
   };
 
