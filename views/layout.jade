@@ -3,12 +3,18 @@ html
   head
     title= title
     <!-- Latest compiled and minified CSS -->
-    link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
-    link(rel="stylesheet", href="/stylesheets/css/index.css")
+    // build:css  main.css
+    link(rel="stylesheet", href="bootstrap/dist/css/bootstrap.min.css")
+    link(rel="stylesheet", href="stylesheets/css/index.css")
+    // endbuild
+
   body(ng-app="app")
     block content
-    script(src="/underscore/underscore-min.js")
-    script(src='https://cdn.firebase.com/js/client/2.2.1/firebase.js')
-    script(src="/angular/angular.js")
-    script(src="/angularfire/dist/angularfire.min.js")
-    script(src="/javascripts/main.js")
+
+    // build:js main.js
+    script(src="underscore/underscore-min.js")
+    script(src='javascripts/lib/firebase.min.js')
+    script(src="angular/angular.js")
+    script(src="angularfire/dist/angularfire.min.js")
+    script(src="javascripts/main.js")
+    // endbuild

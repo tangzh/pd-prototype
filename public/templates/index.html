@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title><!-- Latest compiled and minified CSS -->
+    <!-- build:css  dist/main.css-->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/stylesheets/css/index.css">
+    <!-- endbuild-->
+  </head>
+  <body ng-app="app">
+    <div ng-controller="mainCtrl">
+      <div class="sidebar sidebar-left">
+        <ul class="items">
+          <li class="item">PalmDrive</li>
+        </ul>
+      </div>
+      <div class="sidebar sidebar-right"></div>
+      <div class="chat-room">
+        <div class="messages-container">
+          <div ng-repeat="msg in messages" class="message"><span class="username">{{msg.user.username}}</span><span class="message-content">{{msg.content}}</span></div>
+        </div>
+      </div>
+      <div class="message-input-container">
+        <textarea ng-model="message.content" name="message-input" placeholder="Type in here..."></textarea>
+        <button ng-click="sendMessage()" class="btn btn-primary btn-lg btn-send">Send</button>
+      </div>
+    </div>
+    <!-- build:js dist/main.js-->
+    <script src="bower_components/underscore/underscore-min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angularfire/dist/angularfire.min.js"></script>
+    <script src="public/javascripts/main.js"></script>
+    <!-- endbuild-->
+  </body>
+</html>

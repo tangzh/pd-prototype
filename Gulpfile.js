@@ -1,7 +1,8 @@
 var gulp = require('gulp'),
     less = require('gulp-less'),
     path = require('path'),
-    nodemon = require('gulp-nodemon');
+    nodemon = require('gulp-nodemon'),
+    $ = require('gulp-load-plugins')();
 
 gulp.task('start', function() {
   nodemon({
@@ -30,14 +31,44 @@ gulp.task('less', function() {
     .pipe(gulp.dest('./public/stylesheets/css'));
 });
 
-gulp.task('js', function() {
-
+// compile index.jade files to .html files in .tmp
+gulp.task('views', function () {
+  return gulp.src(['views/index.jade'])
+      .pipe($.jade({pretty: true}))
+      .pipe(gulp.dest('.tmp'));
 });
+
+gulp.task('templates', function() {
+  return gulp.src([
+    './views/**/*.jade'
+  ])
+  .pipe($.jade({pretty: true}).on('error', $.util.log))
+  .pipe(gulp.dest('public/templates'));
+});
+
+gulp.task('js', function() {
+  return gulp.src('./public/javascripts/**/*.js')
+    .pipe(gulp.dest('dist'));
+});
+
+gulp.task('html', ['views', 'less'], function () {
+  var assets = $.useref.assets({searchPath: ['.tmp', 'public', 'bower_components']});
+
+  return gulp.src('.tmp/index.html')
+    .pipe(assets)
+    .pipe($.if('*.js', $.ngAnnotate()))
+    .pipe($.if('*.js', $.uglify()))
+    .pipe($.if('*.css', $.csso()))
+    .pipe(assets.restore())
+    .pipe($.useref())
+    .pipe(gulp.dest('dist'));
+});
+
 
 gulp.task('watch', function() {
   gulp.watch('./public/stylesheets/less/**/*.less', ['less']);
 });
 
-gulp.task('default', ['start', 'express', 'less', 'watch'], function() {
+gulp.task('default', ['start', 'express', 'less', 'watch', 'html'], function() {
 
 });
