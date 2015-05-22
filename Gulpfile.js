@@ -51,9 +51,8 @@ gulp.task('js', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('html', ['views', 'less', 'templates', 'js'], function () {
+gulp.task('html', ['views', 'less'], function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'public', 'bower_components']});
-  console.log(assets);
 
   return gulp.src('.tmp/index.html')
     .pipe(assets)
